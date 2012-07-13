@@ -56,6 +56,18 @@ Ext.define('CustomApp', {
             value: value
         });
         cardboardConfig.storeConfig.filters.push(query);
+
+        cardboardConfig.magicFieldValue = value;
+
+        var me = this;
+        cardboardConfig.listeners.beforecarddroppedsave = function(column, card) {
+            console.log(column.config);
+            var newBoard = column.up(".rallycardboard");
+            card.getRecord().set(me.swimlaneAttribute, newBoard.magicFieldValue);
+
+        };
+
+
         if (destroyHeader) {
             cardboardConfig.listeners.load = function(cardboard) {
                 Ext.each(cardboard.getColumns(), function(column) {
