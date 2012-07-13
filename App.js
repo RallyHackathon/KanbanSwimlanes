@@ -4,6 +4,9 @@ Ext.define('CustomApp', {
 
     defaultCardboardConfig:{
         xtype:'rallycardboard',
+        columnConfig:{
+            xtype:'swimlanescolumn'
+        },
         listeners:{},
         storeConfig:{
             filters:[]

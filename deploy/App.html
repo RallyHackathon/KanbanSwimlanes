@@ -7,14 +7,38 @@
 
     <script type="text/javascript">
         Rally.onReady(function() {
+            Ext.define('Rally.ui.cardboard.KanbanColumn', {
+                extend: 'Rally.ui.cardboard.Column',
+                alias: 'widget.rallykanbancolumn',
+                getColumnHeightFromCards: function() {
+            
+                    var contentMinHeight = 50;
+            
+                    var bottomPadding = 30;
+                    var cards = this.query(this.cardConfig.xtype);
+                    var height = bottomPadding;
+            
+                    Ext.each(cards, function(card) {
+                        height += card.getHeight();
+                    });
+            
+                    height = height < contentMinHeight ? contentMinHeight : height;
+            
+                    height += this.down('#columnHeader').getHeight();
+            
+                    return height;
+                }
+            });
             Ext.define('CustomApp', {
                 extend: 'Rally.app.App',
                 componentCls: 'app',
             
                 defaultCardboardConfig:{
                     xtype:'rallycardboard',
-                    filters:[],
-                    listeners:{}
+                    listeners:{},
+                    storeConfig:{
+                        filters:[]
+                    }
                 },
                 swimlaneAttribute:'KanbanState',
                 model:'story',
@@ -29,13 +53,13 @@
                 getSwimlaneValues:function(model) {
                     var field = model.getField(this.swimlaneAttribute);
                     Ext.Array.each(field.allowedValues, function(value, index) {
-                        this.addRow(field, value.StringValue, index);
+                        this.addRow(field.name, value.StringValue, index);
                     }, this);
                 },
             
                 addRow:function(field, value, destroyHeader) {
-                    var plus = "+";
-                    var minus = "-";
+                    var plus = value + " +";
+                    var minus = value + " -";
                     var button = {
                         xtype:"rallybutton",
                         text: minus,
@@ -58,14 +82,27 @@
                     };
             
                     cardboardConfig.itemId = 'cardboard';
-                    cardboardConfig.filters.push({
+                    var query = Ext.create('Rally.data.QueryFilter', {
                         property: field,
                         value: value
                     });
+                    cardboardConfig.storeConfig.filters.push(query);
+            
+                    cardboardConfig.magicFieldValue = value;
+            
+                    var me = this;
+                    cardboardConfig.listeners.beforecarddroppedsave = function(column, card) {
+                        console.log(column.config);
+                        var newBoard = column.up(".rallycardboard");
+                        card.getRecord().set(me.swimlaneAttribute, newBoard.magicFieldValue);
+            
+                    };
+            
+            
                     if (destroyHeader) {
                         cardboardConfig.listeners.load = function(cardboard) {
                             Ext.each(cardboard.getColumns(), function(column) {
-                                column.down('#columnHeader').destroy();
+                                column.down('#columnHeader').setVisible(false);
                             });
                         };
                     }

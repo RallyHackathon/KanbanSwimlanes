@@ -2,7 +2,8 @@
     "name": "KanbanSwimlanes",
     "className": "CustomApp",
     "sdk": "2.0p2",
-    "javascript": [
+    "javascript": [,
+        "SwimlanesColumn.js",
         "App.js"
     ],
     "css": [
