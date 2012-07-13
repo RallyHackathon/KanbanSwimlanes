@@ -59,7 +59,7 @@ Ext.define('CustomApp', {
         if (destroyHeader) {
             cardboardConfig.listeners.load = function(cardboard) {
                 Ext.each(cardboard.getColumns(), function(column) {
-                    column.down('#columnHeader').destroy();
+                    column.down('#columnHeader').setVisible(false);
                 });
             };
         }
