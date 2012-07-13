@@ -1,2 +1,1 @@
-KanbanSwimlanes
-===============
+This is an App that will allow the use Kanban in Rally with the additional feature of having swimlanes.
