@@ -3,8 +3,7 @@
     "className": "CustomApp",
     "sdk": "2.0p2",
     "javascript": [
-        "App.js",
-        "SwimlaneKanban.js"
+        "App.js"
     ],
     "css": [
         "app.css"

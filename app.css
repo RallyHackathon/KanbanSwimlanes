@@ -1,3 +1,9 @@
 .app {
      /* Add app styles here */
 }
+
+body {
+
+    overflow-y: auto !important;
+
+}
