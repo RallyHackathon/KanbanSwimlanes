@@ -4,9 +4,10 @@ Ext.define('CustomApp', {
 
     defaultCardboardConfig:{
         xtype:'rallycardboard',
-        filters:[]
+        filters:[],
+        listeners:{}
     },
-    swimlaneAttribute:'ScheduleState',
+    swimlaneAttribute:'KanbanState',
     model:'story',
 
     launch: function() {
@@ -18,25 +19,47 @@ Ext.define('CustomApp', {
     },
     getSwimlaneValues:function(model) {
         var field = model.getField(this.swimlaneAttribute);
-        Ext.Array.each(field.allowedValues, function(value,index) {
-            this.addCardboard(field, value.StringValue,index);
+        Ext.Array.each(field.allowedValues, function(value, index) {
+            this.addRow(field, value.StringValue, index);
         }, this);
     },
 
-    addCardboard:function(field, value, destroyHeader) {
-        var config = Ext.clone(this.defaultCardboardConfig);
-        config.filters.push({
+    addRow:function(field, value, destroyHeader) {
+        var plus = "+";
+        var minus = "-";
+        var button = {
+            xtype:"rallybutton",
+            text: minus,
+            handler: function(button) {
+                var card = this.up('.container').down('#cardboard');
+                if (minus == button.getText()) {
+                    card.setVisible(false);
+                    button.setText(plus);
+                }
+                else {
+                    button.setText(minus);
+                    card.setVisible(true);
+                }
+            }
+        };
+        var cardboardConfig = Ext.clone(this.defaultCardboardConfig);
+        var row = {
+            items:[button,cardboardConfig]
+
+        };
+
+        cardboardConfig.itemId = 'cardboard';
+        cardboardConfig.filters.push({
             property: field,
             value: value
         });
-        var cardboard = Ext.widget(config.xtype, config);
         if (destroyHeader) {
-            cardboard.on('load', function(cardboard) {
+            cardboardConfig.listeners.load = function(cardboard) {
                 Ext.each(cardboard.getColumns(), function(column) {
                     column.down('#columnHeader').destroy();
                 });
-            });
+            };
         }
-        this.add(cardboard);
+        this.add(row);
     }
 });
