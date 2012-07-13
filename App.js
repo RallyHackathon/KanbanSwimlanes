@@ -25,8 +25,8 @@ Ext.define('CustomApp', {
     },
 
     addRow:function(field, value, destroyHeader) {
-        var plus = "+";
-        var minus = "-";
+        var plus = value + " +";
+        var minus = value + " -";
         var button = {
             xtype:"rallybutton",
             text: minus,
