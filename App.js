@@ -3,6 +3,8 @@ Ext.define('CustomApp', {
     componentCls: 'app',
 
     launch: function() {
-        //Write app code here
+        this.add({
+            xtype:'appswimlanekanban'
+        });
     }
 });

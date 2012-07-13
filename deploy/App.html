@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KanbanSwimlanes</title>
+
+    <script type="text/javascript" src="/apps/2.0p2/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function() {
+            Ext.define('CustomApp', {
+                extend: 'Rally.app.App',
+                componentCls: 'app',
+            
+                launch: function() {
+                    this.add({
+                        xtype:'appswimlanekanban'
+                    });
+                }
+            });
+            Ext.define('SwimlaneKanban', {
+                alias:'appswimlanekanban',
+                extend: 'Ext.Container',
+                componentCls: 'swimlanekanban',
+            
+                config:{
+                    cardboardConfig:{
+                        xtype:'rallycardboard'
+                    },
+                    swimlaneAttribute:'ScheduleState',
+                    model:'story'
+                },
+            
+                initComponent:function() {
+                    Rally.data.ModelFactory.getModel({
+                        type: 'User Story',
+                        success: function(userStoryModel) {
+                            viewport.add({
+                                xtype: 'rallygrid',
+                                model: userStoryModel,
+                                columnCfgs: [
+                                    'FormattedID',
+                                    'Name',
+                                    'Owner'
+                                ]
+                            });
+                        }
+                    });
+                },
+            
+                getSwimlaneValues:function() {
+            
+                }
+            });
+
+            Rally.launchApp('CustomApp', {
+                name: 'KanbanSwimlanes'
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        .app {
+             /* Add app styles here */
+        }
+    </style>
+</head>
+<body></body>
+</html>
