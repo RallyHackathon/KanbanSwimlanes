@@ -4,8 +4,10 @@ Ext.define('CustomApp', {
 
     defaultCardboardConfig:{
         xtype:'rallycardboard',
-        filters:[],
-        listeners:{}
+        listeners:{},
+        storeConfig:{
+            filters:[]
+        }
     },
     swimlaneAttribute:'KanbanState',
     model:'story',
@@ -20,7 +22,7 @@ Ext.define('CustomApp', {
     getSwimlaneValues:function(model) {
         var field = model.getField(this.swimlaneAttribute);
         Ext.Array.each(field.allowedValues, function(value, index) {
-            this.addRow(field, value.StringValue, index);
+            this.addRow(field.name, value.StringValue, index);
         }, this);
     },
 
@@ -49,10 +51,11 @@ Ext.define('CustomApp', {
         };
 
         cardboardConfig.itemId = 'cardboard';
-        cardboardConfig.filters.push({
+        var query = Ext.create('Rally.data.QueryFilter', {
             property: field,
             value: value
         });
+        cardboardConfig.storeConfig.filters.push(query);
         if (destroyHeader) {
             cardboardConfig.listeners.load = function(cardboard) {
                 Ext.each(cardboard.getColumns(), function(column) {
