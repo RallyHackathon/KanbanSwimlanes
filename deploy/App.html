@@ -7,9 +7,9 @@
 
     <script type="text/javascript">
         Rally.onReady(function() {
-            Ext.define('Rally.ui.cardboard.KanbanColumn', {
+            Ext.define('Rally.ui.cardboard.SwimlanesColumn', {
                 extend: 'Rally.ui.cardboard.Column',
-                alias: 'widget.rallykanbancolumn',
+                alias: 'widget.swimlanescolumn',
                 getColumnHeightFromCards: function() {
             
                     var contentMinHeight = 50;
@@ -35,6 +35,9 @@
             
                 defaultCardboardConfig:{
                     xtype:'rallycardboard',
+                    columnConfig:{
+                        xtype:'swimlanescolumn'
+                    },
                     listeners:{},
                     storeConfig:{
                         filters:[]
