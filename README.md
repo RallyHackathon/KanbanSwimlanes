@@ -1,1 +1,1 @@
-This is an App that will allow the use Kanban in Rally with the additional feature of having swimlanes.
+This is an App that will allow the use Kanban in Rally with the additional feature of having swimlanes. This is a work in progress and has a number of issues. You can see some of them on this repo's issue list.
